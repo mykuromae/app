@@ -1,6 +1,17 @@
 // backend.js
 // not to self
 // DEBUGGING FOR: npm run dev export DEBUG='express:router'
+
+// use https://app.curlite.rest/workspace
+// run it after typing this:
+// POST http://localhost:8000/users
+// Content-Type: "application/json"
+// Authorization: "Bearer your-token-here"
+// {
+//   "id": "qwe123",
+//   "name": "Cindy",
+//   "job": "Zookeeper"
+// }
 import express from "express";
 
 const app = express();
@@ -70,6 +81,17 @@ app.get("/users/:id", (req, res) => {
   } else {
     res.send(result);
   }
+});
+
+const addUser = (user) => {
+  users["users_list"].push(user);
+  return user;
+};
+
+app.post("/users", (req, res) => {
+  const userToAdd = req.body;
+  addUser(userToAdd);
+  res.send();
 });
 
 app.listen(port, () => {
