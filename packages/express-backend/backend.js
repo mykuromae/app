@@ -110,12 +110,12 @@ const addUser = (user) => {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
-  userToAdd.id = generateId();
+  userToAdd.id = generateId(); // generate id
   addUser(userToAdd);
-  res.status(201).send(); // return 201 status
+  res.status(201).send(userToAdd); // return 201 status
 });
 
-// delete by id
+// delete by id 
 app.delete("/users/:id", (req, res) => {
   const id = req.params.id;
   const index = users["users_list"].findIndex((user) => user.id === id);
