@@ -15,6 +15,11 @@
 import express from "express";
 import cors from "cors";
 
+// generate id on server
+function generateId() {
+  return Math.random().toString(36).substring(2, 6);
+}
+
 const app = express();
 const port = 8000;
 
@@ -48,6 +53,12 @@ const users = {
   ]
 };
 
+const findUserByName = (name) => {
+  return users["users_list"].filter(
+    (user) => user["name"] === name
+  );
+};
+
 app.use(cors());
 
 app.use(express.json());
@@ -55,24 +66,6 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
-
-const findUserByName = (name) => {
-  return users["users_list"].filter(
-    (user) => user["name"] === name
-  );
-};
-
-// original .get
-// app.get("/users", (req, res) => {
-//  const name = req.query.name;
-//  if (name != undefined) {
-//    let result = findUserByName(name);
-//    result = { users_list: result };
-//    res.send(result);
-//  } else {
-//    res.send(users);
-//  }
-// });
 
 app.get("/users", (req, res) => {
   const name = req.query.name;
@@ -117,6 +110,7 @@ const addUser = (user) => {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
+  userToAdd.id = generateId();
   addUser(userToAdd);
   res.status(201).send(); // return 201 status
 });
